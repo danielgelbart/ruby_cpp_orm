@@ -1,3 +1,6 @@
+
+
+
 module MetaMapper
   class << self
     attr_reader :models
@@ -15,15 +18,16 @@ module MetaMapper
 
       context = opts.delete(:context)
       generator = Generator[format].new(context, opts)
+      binding.pry
       generator.run()
-            
+
       models.each { |model|
           puts "generating #{model}"
           opts[:context] = model
           generate(format, opts)
       } if !context
     end
-    
+
     def has_class(class_name)
       !!@models.find{ |m| m.name == class_name }
     end

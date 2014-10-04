@@ -32,7 +32,7 @@ public:
     {
         _tables.push_back("<%= storage_name %>");
         
-        _constraint._cond = "(<%= storage_name + "." + get_key_to_parent(r) %> = " + parentId.to_s() + ")";
+        _constraint._cond = "(<%= storage_name %>.<%= get_key_to_parent(r) %> = " + parentId.to_s() + ")";
     } 
     <%- end -%>
     

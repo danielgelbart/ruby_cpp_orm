@@ -45,14 +45,14 @@ module MetaMapper
       def inherited(klass)
         @subclasses ||= []
         @subclasses << klass
-         
+
         # subclasses << klass
         klass.format(klass.name.demodulize.underscore)
         klass.setup_model{ Proc.new{} }
         klass.generated_files = TemplateCollection.new
       end
     end
-    
+
     attr_reader :model
 
     def initialize(model, opts={})

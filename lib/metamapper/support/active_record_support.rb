@@ -28,7 +28,7 @@ module MetaMapper
     def is_key_to_parent(name)
       keys = model.reflections.select{ |s,v| v.macro == :belongs_to }
       keys = keys.map{ |k,v| v.foreign_key }
-      keys.include?(name)
+      keys.include?(name.to_sym)
     end
  
     # Returns the key (string) 'child_model' uses to reference me (the parent)
@@ -74,7 +74,7 @@ module MetaMapper
     end
 
     def table_name(model)
-      model.table_name
+      model.table_name.to_s
     end
     
     def parent_name(r)
@@ -102,7 +102,7 @@ module MetaMapper
 
     def get_column_parent_model_name(c)
       parents = model.reflect_on_all_associations(:belongs_to)  
-      parents.select!{ |r| r.foreign_key == c.name }
+      parents.select!{ |r| r.foreign_key == c.name.to_sym }
       parents.first.class_name
     end
   end # module active_record_support 
