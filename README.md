@@ -1,0 +1,1 @@
+Fixed paths for output and template dirs.

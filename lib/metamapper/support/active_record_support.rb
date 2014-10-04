@@ -3,19 +3,19 @@ module MetaMapper
 
      # 1) convert every column name to a cpp_name
      # 2) If enums are defined for the model, they are converted to cpp
-     def setup_orm_specific_fields 
+     def setup_orm_specific_fields
       enums = {}
       model.columns.each do |c|
         cpp_name = if c.primary
          "Field<I_#{decolonize(model.name)}>"
-        elsif is_key_to_parent(c.name) 
-          "Field<I_#{decolonize(get_column_parent_model_name(c))}>" 
+        elsif is_key_to_parent(c.name)
+          "Field<I_#{decolonize(get_column_parent_model_name(c))}>"
         elsif model.methods.include?(:enum_field?) &&
               model.enum_field?(c.name.to_sym)
           name = c.name.upcase # enum name
           enums[name] =  model.send("#{c.name}_native")
           "Field<Enum#{decolonize(model.name)}#{name}>"
-        else   
+        else
           "F_#{decolonize(c.klass.to_s)}"
         end
         (class << c; self; end).instance_eval{ attr_accessor :cpp_name }
@@ -30,7 +30,7 @@ module MetaMapper
       keys = keys.map{ |k,v| v.foreign_key }
       keys.include?(name.to_sym)
     end
- 
+
     # Returns the key (string) 'child_model' uses to reference me (the parent)
     # Probably dont need this method due to method 'get_key_to_parent'
     def child_key(child_model)
@@ -41,7 +41,7 @@ module MetaMapper
 
     # my key to refernce parrent
     def get_key_to_parent(r)
-      r.foreign_key  
+      r.foreign_key
     end
 
     # Handle all "belongs to" associations
@@ -64,7 +64,7 @@ module MetaMapper
       @one_to_many.select!{ |v| MetaMapper.has_class(v.class_name) }
       @one_to_many
     end
-  
+
     def child_model_name(child)
       child.class_name
     end
@@ -76,7 +76,7 @@ module MetaMapper
     def table_name(model)
       model.table_name.to_s
     end
-    
+
     def parent_name(r)
       r.class_name
     end
@@ -84,7 +84,7 @@ module MetaMapper
     def child_plural_name(m)
       m.name.to_s
     end
-    
+
     def get_enum(name, e, class_name)
        e.map{|k,v| class_name.upcase + "_" + name.to_s.upcase + "_" + k.to_s.sub(".","_").upcase + " = " + v.to_s}.join(", ")
     end
@@ -101,9 +101,9 @@ module MetaMapper
     private
 
     def get_column_parent_model_name(c)
-      parents = model.reflect_on_all_associations(:belongs_to)  
+      parents = model.reflect_on_all_associations(:belongs_to)
       parents.select!{ |r| r.foreign_key == c.name.to_sym }
       parents.first.class_name
     end
-  end # module active_record_support 
+  end # module active_record_support
 end

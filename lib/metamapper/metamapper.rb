@@ -18,7 +18,7 @@ module MetaMapper
 
       context = opts.delete(:context)
       generator = Generator[format].new(context, opts)
-      binding.pry
+
       generator.run()
 
       models.each { |model|
