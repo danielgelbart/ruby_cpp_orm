@@ -86,7 +86,7 @@ module MetaMapper
     end
 
     def get_enum(name, e, class_name)
-       e.map{|k,v| class_name.upcase + "_" + name.to_s.upcase + "_" + k.to_s.sub(".","_").upcase + " = " + v.to_s}.join(", ")
+       e.map{|k,v| k.to_s.sub(".","_").upcase + " = " + v.to_s}.join(", ")
     end
 
     def generated_properties
