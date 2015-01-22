@@ -13,7 +13,7 @@ module MetaMapper
         elsif model.methods.include?(:enum_field?) &&
               model.enum_field?(c.name.to_sym)
           name = c.name.upcase # enum name
-          enums[name] =  model.send("#{c.name}_native")
+          enums[name] =  model.enum_options(c.name.to_sym)
           "Field<Enum#{decolonize(model.name)}#{name}>"
         else
           "F_#{decolonize(c.klass.to_s)}"
