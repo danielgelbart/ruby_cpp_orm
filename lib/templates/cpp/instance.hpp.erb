@@ -18,7 +18,6 @@
 enum Enum<%= class_name %><%= name %> { <%= get_enum(name, e, class_name) %> };
 <%- end -%>
 
-
 namespace DMMM {
 
 class O_<%= class_name %>{
@@ -51,6 +50,7 @@ public:
         return table.select(table._<%= child_key(relative.class_name.constantize) %>() == _id());   
     }
     <%- end -%>
+
 
     <%- generated_properties.each do |property| -%>
     const <%= property.cpp_name %>::Base& _<%= property.name %>() const { 

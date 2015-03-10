@@ -57,7 +57,11 @@ public:
         std::vector<std::string> ret;
         ret.clear();
         <%- generated_properties.each do |property| -%>
+        <%- if is_enum?(property) -%>
+        ret.push_back("<%= property.name + '+0' %>");
+        <%- else -%>
         ret.push_back("<%= property.name %>");
+             <%- end -%>
         <%- end -%>
         return ret;
     }
@@ -76,7 +80,7 @@ public:
             <%- generated_properties.each do |property| -%>
             ret[i]._f_<%= property.name %>._base =
             <%- if is_enum?(property) -%>
-                (<%= property.cpp_name %>::Base)UTILS::fromString<size_t>(res[i]["<%= property.name %>"]);
+                (<%= property.cpp_name %>::Base)UTILS::fromString<size_t>(res[i]["<%= property.name + '+0' %>"]);
             <%- else -%>
                 UTILS::fromString<<%= property.cpp_name %>::Base>(res[i]["<%= property.name %>"]);
             <%- end -%>
